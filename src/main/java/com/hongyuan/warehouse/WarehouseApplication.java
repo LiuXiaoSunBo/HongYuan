@@ -5,6 +5,8 @@ import com.hongyuan.warehouse.services.WechatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +14,7 @@ import java.io.IOException;
 
 @SpringBootApplication
 @EnableScheduling
-public class WarehouseApplication {
+public class WarehouseApplication extends SpringBootServletInitializer {
 
     @Autowired
     WechatService wechatService;
@@ -27,4 +29,8 @@ public class WarehouseApplication {
         wechatService.setView();
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(WarehouseApplication.class);
+    }
 }

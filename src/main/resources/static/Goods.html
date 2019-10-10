@@ -67,15 +67,15 @@
             }
             ,
             chang2(){
-                window.location.href="http://localhost/aidi-service-web-dev1/html/Goodsinfo.html"
+                window.location.href="http://www.bsx6.cn/hongyuan/Goodsinfo.html"
             },
             change(e) {
-               window.location.href="http://localhost/aidi-service-web-dev1/html/Goodsinfo.html?id="+e
+               window.location.href="http://www.bsx6.cn/hongyuan/Goodsinfo.html?id="+e
             },
             test:function (e) {
                 this.name = e;
                 let that = this
-                axios.get("http://localhost/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
+                axios.get("http://www.bsx6.cn/hongyuan/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
 
                     if (res.data.size!=0){
                         that.list=res.data
@@ -85,7 +85,7 @@
             tests:function (e) {
                 this.warname = e;
                 let that = this
-                axios.get("http://localhost/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
+                axios.get("http://www.bsx6.cn/hongyuan/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
 
                     if (res.data.size!=0){
                         that.war=res.data
@@ -95,13 +95,13 @@
         },
           mounted() {
             let that = this
-              axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(  function (res) {
+              axios.get("http://www.bsx6.cn/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(  function (res) {
                  if (res.data.size != 0) {
                      that.list = res.data
                      console.log(that.list)
                  }
              })
-              axios.get("http://localhost/getwarebyname?name=" + this.warname, {headers: {"content-Type": "application/json"}}).then(  function (res) {
+              axios.get("http://www.bsx6.cn/hongyuan/getwarebyname?name=" + this.warname, {headers: {"content-Type": "application/json"}}).then(  function (res) {
                   if (res.data.size != 0) {
                       that.war = res.data
                       console.log(that.war)

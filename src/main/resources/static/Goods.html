@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width">
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="root">
+    <van-tabs id="tarbar" v-model="active">
+        <van-tab title="货物">
+            <van-search
+                    id="goodsseach"
+                    ref="goodsseach"
+                    v-model="value"
+                    placeholder="请输入搜索关键词"
+                    show-action
+                    @input="test"></van-search>
+            <van-list
+                    v-model="loading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="onLoad">
+                <van-cell
+                        v-for="item in list"
+                        :key="item"
+                        :title="item.goodsname "
+                        @Click="change(item.goodsid)"
+                />
+            </van-list>
+
+        </van-tab>
+    </van-tabs>
+    <van-button type="primary" @click="chang2()" style="position: absolute;bottom: 13px;right: 15px;background-color: blue" size="normal">添加货物</van-button>
+</div>
+<script>
+    new Vue({
+        el:"#root",
+        data:{
+            active: 0,
+            value:"",
+            list:[] ,
+            loading: false,
+            finished: false,
+            name:"",
+            war:[],
+            warname:""
+        },
+        methods:{
+            onLoad() {
+                setTimeout(() => {
+                    console.log(this.list)
+                    // 加载状态结束
+                    this.loading = false;
+
+                    // 数据全部加载完成
+
+                        this.finished = true}, 500);
+            }
+            ,
+            chang2(){
+                window.location.href="http://localhost/aidi-service-web-dev1/html/Goodsinfo.html"
+            },
+            change(e) {
+               window.location.href="http://localhost/aidi-service-web-dev1/html/Goodsinfo.html?id="+e
+            },
+            test:function (e) {
+                this.name = e;
+                let that = this
+                axios.get("http://localhost/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
+
+                    if (res.data.size!=0){
+                        that.list=res.data
+                    }
+                })
+            },
+            tests:function (e) {
+                this.warname = e;
+                let that = this
+                axios.get("http://localhost/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
+
+                    if (res.data.size!=0){
+                        that.war=res.data
+                    }
+                })
+            }
+        },
+          mounted() {
+            let that = this
+              axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(  function (res) {
+                 if (res.data.size != 0) {
+                     that.list = res.data
+                     console.log(that.list)
+                 }
+             })
+              axios.get("http://localhost/getwarebyname?name=" + this.warname, {headers: {"content-Type": "application/json"}}).then(  function (res) {
+                  if (res.data.size != 0) {
+                      that.war = res.data
+                      console.log(that.war)
+                  }
+              })
+
+         }
+    })
+</script>
+</body>
+</html>

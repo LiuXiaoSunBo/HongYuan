@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Title</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
+    <style>
+        #istrue{
+            float: right;
+            margin-right: 15px;
+            margin-top: 15px;
+        }
+        .s{
+            margin-top: 15px;
+            border-top:none;
+        }
+        #sub{
+            margin-top: 15px;
+            background: blue;
+        }
+        span{
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+<div id="root">
+    <van-cell-group class="s">
+        <van-field
+                v-model="companyname"
+                required
+                clearable
+                label="公司名称"
+                right-icon="question-o"
+                placeholder="请输入公司名称"
+                @click-right-icon="$toast('question')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="goodsname"
+                required
+                clearable
+                label="货品名称"
+                right-icon="question-o"
+                placeholder="请输入货品名称"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="goodsmaterial"
+                required
+                clearable
+                label="货品材料"
+                right-icon="question-o"
+                placeholder="请输入货品材料"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="goodsgel"
+                required
+                clearable
+                label="货品备胶"
+                right-icon="question-o"
+                placeholder="请输入货品备胶"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="stampingnumber"
+                required
+                clearable
+                label="冲压数量"
+                right-icon="question-o"
+                placeholder="请输入货品冲压数量"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="gluingnumber"
+                required
+                clearable
+                label="贴胶数量"
+                right-icon="question-o"
+                placeholder="请输入货品贴胶数量"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="goodsproductions"
+                required
+                clearable
+                label="货品生产数"
+                right-icon="question-o"
+                placeholder="请输入货品生产数"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="mould"
+                required
+                clearable
+                label="货品模具"
+                right-icon="question-o"
+                placeholder="请输入货品模具"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="goodsshipment"
+                required
+                clearable
+                label="出货数量"
+                right-icon="question-o"
+                placeholder="请输入出货数量"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+    <van-cell-group class="s">
+        <van-field
+                v-model="truenumber"
+                required
+                clearable
+                label="货品合格个数"
+                right-icon="question-o"
+                placeholder="请输入货品合格"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+
+    <van-cell-group class="s bs" style="display: none">
+        <van-field
+                v-model="warehourse"
+                required
+                clearable
+                label="入库个数"
+                right-icon="question-o"
+                placeholder="请输入货品入库个数"
+                @click-right-icon="$toast('如不熟悉可联系刘女士')"
+        />
+    </van-cell-group>
+
+    <van-checkbox id="istrue" v-model="checked" >是否完成</van-checkbox>
+
+    <van-button id="sub" @click="commit" type="primary" size="large">提交</van-button>
+</div>
+<script>
+    new Vue({
+        el:"#root",
+        data:{
+            goodsid:0,
+            goodsname:"",
+            goodsmaterial:"",
+            companyname:"",
+            goodsgel:"",
+            gluingnumber:"",
+            stampingnumber:"",
+            goodsproductions:"",
+            mould:"",
+            goodsshipment:"",
+            truenumber:"",
+            checked:"",
+            warehourse:0
+        },
+        methods:{
+            commit:function (){
+                let that =this;
+                let time =(new Date()).toLocaleDateString()
+                time.replace('年','-')
+                time.replace('月','-')
+                time.replace('日','-')
+                let  url = "http://localhost/insertgoods";
+                if (document.getElementsByClassName("bs")[0].style.display=='inline-block'){
+                    url+="?warehome="+that.warehourse
+                }
+                if (this.goodsname!=""&&this.goodsmaterial!=""&&this.companyname!=""&&this.stampingnumber!=""
+                    &&this.goodsproductions!=""&&this.mould!=""&&this.gluingnumber!=""
+                    &&this.goodsshipment!=""&&this.truenumber!=""&&this.checked!=""){
+                    axios.post(url,{
+                        goodsid:that.goodsid,
+                        goodsname:that.goodsname,
+                        goodsmaterial:that.goodsmaterial,
+                        companyname:that.companyname,
+                        goodsgel:that.goodsgel,
+                        gluingnumber:that.gluingnumber,
+                        stampingnumber:that.stampingnumber,
+                        goodsproductions:that.goodsproductions,
+                        mould:that.mould,
+                        goodsshipment:that.goodsshipment,
+                        truenumber:that.truenumber,
+                        isover:that.checked==true?1:0,
+                        goodsshipmentdata:time
+                    }).then(function (res) {
+                        if (res.data==1){
+                            alert("操作成功!")
+                            window.location.href="http://localhost:63343/aidi-service-web-dev1/html/Goods.html?_ijt=3kd8dhc98lb4u2ks2b26m2n62u"
+                        }
+                    })
+                }else {
+                    alert("请先完善全部消息!")
+                }
+            }
+        },
+        created(){
+            let that = this
+            let queryVariable = getQueryVariable("id");
+            if (queryVariable!=""&&queryVariable!=null&&queryVariable instanceof Object ==false)
+            {
+                document.getElementsByClassName("bs")[0].style.display="inline-block"
+                axios.get("http://localhost/getbyid?id="+queryVariable).then(function (res) {
+                    let val = res.data
+                    console.log(res.data)
+                    that.goodsid=val.goodsid
+                    that.companyname= val.companyname
+                    that.gluingnumber= val.gluingnumber
+                    that.goodsgel= val.goodsgel
+                    that.goodsid= val.goodsid
+                    that.goodsmaterial= val.goodsmaterial
+                    that.goodsname= val.goodsname
+                    that.stampingnumber=val.stampingnumber
+                    that.goodsproductions= val.goodsproductions
+                    that.goodsshipment= val.goodsshipment
+                    that.truenumber= val.truenumber
+                    that.checked= val.isover==1?true:false
+                    that.mould= val.mould
+                })
+            }
+        }
+    })
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+</script>
+</body>
+</html>

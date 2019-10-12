@@ -82,17 +82,6 @@
                     }
                 })
             },
-            tests:function (e) {
-                this.warname = e;
-                let that = this
-                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
-
-                    if (res.data.size!=0){
-                        that.war=res.data
-                    }
-                })
-            }
-        },
           mounted() {
             let that = this
               axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(  function (res) {
@@ -101,13 +90,6 @@
                      console.log(that.list)
                  }
              })
-              axios.get("http://122.51.16.101/hongyuan/getwarebyname?name=" + this.warname, {headers: {"content-Type": "application/json"}}).then(  function (res) {
-                  if (res.data.size != 0) {
-                      that.war = res.data
-                      console.log(that.war)
-                  }
-              })
-
          }
     })
 </script>

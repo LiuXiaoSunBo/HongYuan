@@ -14,5 +14,5 @@ public class Warehouse {
     @TableId
     Integer goodsid;
     String time;
-    String goodsnumber;
+    Integer goodsnumber;
 }

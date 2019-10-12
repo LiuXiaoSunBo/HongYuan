@@ -19,10 +19,13 @@ public class BaseController {
     @Autowired
     WechatService wechatService;
     @RequestMapping("/")
-    public String test(HttpServletRequest request, @RequestParam(value="id",required = false,defaultValue = "") String echostr) throws IOException, URISyntaxException {
-        if (echostr!=""&&echostr!=null){
+    public String test(HttpServletRequest request, @RequestParam(name="echostr",required = false,defaultValue = "") String echostr) throws IOException, URISyntaxException {
+        System.out.println("echostr```````````````"+echostr);
+        System.out.println(echostr!="");
+        if (echostr!=""&&echostr!=null&&!echostr.equals("")){
             return echostr;
         }
+        System.out.println("是文字啊");
         return wechatService.event(request);
     }
 }

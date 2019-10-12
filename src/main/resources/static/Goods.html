@@ -10,12 +10,48 @@
     <!-- 引入 Vue 和 Vant 的 JS 文件 -->
     <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
     <style>
-
+        .van-button--primary{
+            border: 1px solid blue;
+        }
+        html,body{
+            height: 100%;
+        }
+        #wareimg{
+            height: 100%;
+        }
+        .imgs-ware{
+            margin-left: 25px;
+            margin-top: 15px;
+            width: 150px;
+            float: left;
+            height: 150px;
+            border: 1px  rgba(0,0,0,0.1) solid  ;
+            box-shadow: -6px 3px 7px rgba(0,0,0,0.05);
+        }
+        .imgs-ware:active{
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
 <div id="root">
     <van-tabs id="tarbar" v-model="active">
+        <van-tab title="仓库">
+            <van-search
+                    id="goodsseach"
+                    ref="goodsseach"
+                    v-model="value"
+                    placeholder="请输入搜索关键词"
+                    @input="test"
+                    show-action
+                    ></van-search>
+            <div id="wareimg" v-for="ware in list">
+                <div class="imgs-ware" @click="change(ware.goodsid)">
+                    <img style="width: 80px;height: 80px;margin-left: 25%;margin-top: 15%;margin-bottom: 10%" :src=ware.imgurl>
+                    <div style="padding-left: 11px;font-size: 14px">{{ware.goodsname}}</div>
+                </div>
+            </div>
+        </van-tab>
         <van-tab title="货物">
             <van-search
                     id="goodsseach"
@@ -36,10 +72,11 @@
                         @Click="change(item.goodsid)"
                 />
             </van-list>
-
+            <van-button type="primary" @click="chang2()" style="position: absolute;bottom: -44px;right: 15px;background-color: blue" size="normal" style="border: 1px solid blue">添加货物</van-button>
         </van-tab>
+
     </van-tabs>
-    <van-button type="primary" @click="chang2()" style="position: absolute;bottom: 13px;right: 15px;background-color: blue" size="normal">添加货物</van-button>
+
 </div>
 <script>
     new Vue({
@@ -52,7 +89,6 @@
             finished: false,
             name: "",
             war: [],
-            warname: ""
         },
         methods: {
             onLoad() {
@@ -68,32 +104,58 @@
             }
             ,
             chang2() {
-                window.location.href = "http://122.51.16.101/hongyuan/Goodsinfo.html"
+                window.location.href = "http://localhost/Goodsinfo.html"
             },
             change(e) {
-                window.location.href = "http://122.51.16.101/hongyuan/Goodsinfo.html?id=" + e
+                window.location.href = "http://localhost/Goodsinfo.html?id=" + e
             },
             test: function (e) {
                 this.name = e;
                 let that = this
-                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
+                axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
 
                     if (res.data.size != 0) {
                         that.list = res.data
                     }
                 })
-            },
-            mounted() {
-                let that = this
-                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
-                    if (res.data.size != 0) {
-                        that.list = res.data
-                        console.log(that.list)
-                    }
+            }
+        },
+        mounted() {
+            let that = this
+            let queryVariable = getQueryVariable("openid");
+            if (queryVariable!=null&&queryVariable!=""&&queryVariable!=undefined){
+                axios.post("http://localhost/login",{queryVariable}).then(function (res) {
+                   if (res.data==true){
+                       sessionStorage.setItem("openid",queryVariable)
+                       axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
+                           if (res.data.size != 0) {
+                               console.log("页面加载中!~")
+                               that.list = res.data
+                               console.log(that.list)
+                           }
+                       })
+                   }else {
+                       alert("您没有资格查看此页面!")
+                       window.location.href="http://www.4399.com"
+                   }
+
                 })
+            }else {
+                alert("出现错误请联系18476496979!")
+                window.location.href="http://www.4399.com"
             }
         }
     })
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
 </script>
 </body>
 </html>

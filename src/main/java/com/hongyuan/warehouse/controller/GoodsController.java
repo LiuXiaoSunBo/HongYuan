@@ -22,6 +22,10 @@ public class GoodsController {
     public List<Goods> test(){
         return goodsService.getall();
     }
+    @RequestMapping("/getgoodsall")
+    public Goods test(Integer id){
+        return goodsService.getgoodsall(id);
+    }
     @RequestMapping("/getGoodsbyname")
     public List<Goods> test(String name){
         return goodsService.getallbynumber(name);
@@ -29,14 +33,15 @@ public class GoodsController {
    @RequestMapping("/getbyid")
    public Goods t(Integer id){return  goodsService.getbyid(id);}
     @PostMapping("/insertgoods")
-    public String test(@RequestBody  Goods goods,String warehome){
+    public String test(@RequestBody  Goods goods,Integer warehome){
         if (goodsService.getbyid(goods.getGoodsid())==null){
+            System.out.println(goods.toString());
             if (goodsService.insertGoods(goods)==true){
                 return "1";
             }
         }else {
             if (goodsService.update(goods)==true){
-                if (!warehome.equals("")&&warehome!=""&&warehome!="undefined"&&warehome!=null){
+                if (!warehome.equals("")&&warehome!=0&&warehome!=null){
                     if (warehouseService.getw(goods.getGoodsid())==null){
                         Boolean aBoolean = warehouseService.insertGoodsinWareHouse(new Warehouse(goods.getGoodsid(), goods.getGoodsshipmentdata(),warehome));
                         if (aBoolean==true){

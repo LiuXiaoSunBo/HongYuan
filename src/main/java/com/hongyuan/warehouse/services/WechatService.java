@@ -29,8 +29,8 @@ import java.nio.charset.Charset;
 public class WechatService {
     private String Event_subscribe = "subscribe";
     private String Event_unsubscribe = "unsubscribe";
-    private String appid="wxf608d12013842cac";
-    private String appsecret="8a8f27807dcec1b62b29daa75cab83a6";
+    private String appid="wx6787a9dcb670047b";
+    private String appsecret="030fb01ab88fe1c7404bbb8e2826ebca";
     private String acusstoken="";
     public String talk(WechatTalkMessage wct, String msg) throws IOException {
         change(wct, wct.getToUserName());
@@ -39,7 +39,7 @@ public class WechatService {
         JAXB.marshal(wct, writer);
         return writer.toString();
     }
-
+    //servlet request inputstream just have one read changes
     public String event(HttpServletRequest request) throws IOException, URISyntaxException {
         InputStream inputStream = inpustStreamtoStringtoinputstream(request.getInputStream());
         WechatBase wcb = JAXB.unmarshal(inputStream, WechatBase.class);
@@ -55,8 +55,12 @@ public class WechatService {
             }
         } else if (wcb.getMsgType().equals("text")) {
             WechatTalkMessage wechatTalkMessage = JAXB.unmarshal(inputStream, WechatTalkMessage.class);
+            System.out.println(wechatTalkMessage.getContent().contains("业务"));
+            System.out.println(wechatTalkMessage.getContent().contains("仓库"));
             if (wechatTalkMessage.getContent().contains("业务")) {
                 return talk(wechatTalkMessage, "QQ:1152650793\n 微信:kai1152650793 \n 田生");
+            }else if (wechatTalkMessage.getContent().contains("仓库")){
+                return talk(wechatTalkMessage, "http://localhost/Goods.html?openid="+wcb.getFromUserName());
             }
         }
         return "";
@@ -80,10 +84,10 @@ public class WechatService {
 
     @Scheduled(fixedRate = 1000*60*60*2)
     public void getAccess_token() throws IOException {
-        System.out.println("来拿accesstoken啦");
-        String getaccesstoken = sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appsecret);
-        JSONObject jsonObject = JSONObject.parseObject(getaccesstoken);
-        this.acusstoken=jsonObject.getString("access_token");
+       System.out.println("来拿accesstoken啦");
+       String getaccesstoken = sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appsecret);
+       JSONObject jsonObject = JSONObject.parseObject(getaccesstoken);
+       this.acusstoken=jsonObject.getString("access_token");
     }
 
     public void setView() throws IOException {

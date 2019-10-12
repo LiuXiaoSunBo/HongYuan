@@ -25,6 +25,9 @@
         span{
             z-index: 10;
         }
+        .van-button--primary{
+            border: 1px solid blue;
+        }
     </style>
 </head>
 
@@ -152,12 +155,21 @@
                 @click-right-icon="$toast('如不熟悉可联系刘女士')"
         />
     </van-cell-group>
+    <van-cell-group class="s">
 
+        <div style="padding-left: 15px">
+            <span style="vertical-align:top;font-size: 14px">图片</span>
+            <input type="file" id="files" onchange="get(this)" style="display: none">
+            <img  id="tup" style="width: 120px;height: 120px;margin-left: 95px; border: 1px  rgba(0,0,0,0.1) solid  ;
+            box-shadow: -6px 3px 7px rgba(0,0,0,0.05);"@click="chooseimg">
+        </div>
+    </van-cell-group>
     <van-checkbox id="istrue" v-model="checked" >是否完成</van-checkbox>
 
-    <van-button id="sub" @click="commit" type="primary" size="large">提交</van-button>
+    <van-button id="sub" @click="commit" type="primary" size="large" style="border: 1px solid blue">提交</van-button>
 </div>
 <script>
+    var base64;
     new Vue({
         el:"#root",
         data:{
@@ -176,19 +188,23 @@
             warehourse:0
         },
         methods:{
+            chooseimg:function () {
+                document.getElementById("files").click()
+            }
+            ,
             commit:function (){
                 let that =this;
                 let time =(new Date()).toLocaleDateString()
                 time.replace('年','-')
                 time.replace('月','-')
                 time.replace('日','-')
-                let  url = "http://122.51.16.101/hongyuan/insertgoods";
+                let  url = "http://localhost/insertgoods";
                 if (document.getElementsByClassName("bs")[0].style.display=='inline-block'){
                     url+="?warehome="+that.warehourse
                 }
                 if (this.goodsname!=""&&this.goodsmaterial!=""&&this.companyname!=""&&this.stampingnumber!=""
                     &&this.goodsproductions!=""&&this.mould!=""&&this.gluingnumber!=""
-                    &&this.goodsshipment!=""&&this.truenumber!=""&&this.checked!=""){
+                    &&this.goodsshipment!=""&&this.truenumber!=""&&base64!=""){
                     axios.post(url,{
                         goodsid:that.goodsid,
                         goodsname:that.goodsname,
@@ -202,11 +218,12 @@
                         goodsshipment:that.goodsshipment,
                         truenumber:that.truenumber,
                         isover:that.checked==true?1:0,
-                        goodsshipmentdata:time
+                        goodsshipmentdata:time,
+                        imgurl:base64
                     }).then(function (res) {
                         if (res.data==1){
                             alert("操作成功!")
-                            window.location.href="http://122.51.16.101/hongyuan/Goods.html"
+                            window.location.href="http://localhost/Goods.html?openid="+sessionStorage.getItem("openid")
                         }
                     })
                 }else {
@@ -220,7 +237,7 @@
             if (queryVariable!=""&&queryVariable!=null&&queryVariable instanceof Object ==false)
             {
                 document.getElementsByClassName("bs")[0].style.display="inline-block"
-                axios.get("http://122.51.16.101/hongyuan/getbyid?id="+queryVariable).then(function (res) {
+                axios.get("http://localhost/getgoodsall?id="+queryVariable).then(function (res) {
                     let val = res.data
                     console.log(res.data)
                     that.goodsid=val.goodsid
@@ -236,6 +253,9 @@
                     that.truenumber= val.truenumber
                     that.checked= val.isover==1?true:false
                     that.mould= val.mould
+                    that.warehourse=val.warehouse.goodsnumber
+                    console.log(val.imgurl)
+                    document.getElementById("tup").src=val.imgurl
                 })
             }
         }
@@ -249,6 +269,15 @@
             if(pair[0] == variable){return pair[1];}
         }
         return(false);
+    }
+    function get(t) {
+        console.log(t.files)
+        let reader = new FileReader();
+        reader.readAsDataURL(t.files[0])
+        reader.onload=function (e) {
+            base64=e.currentTarget.result
+            document.getElementById("tup").src=base64;
+        }
     }
 </script>
 </body>

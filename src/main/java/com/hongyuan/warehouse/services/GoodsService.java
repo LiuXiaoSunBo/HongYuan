@@ -1,6 +1,7 @@
 package com.hongyuan.warehouse.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hongyuan.warehouse.mapper.GoodsMapper;
 import com.hongyuan.warehouse.pojo.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class GoodsService {
     public List<Goods> getallbynumber(String num){
         return goodsMapper.selectList(new QueryWrapper<Goods>().like("goodsname",num));
     }
+    public Goods getgoodsall(Integer id){
+        return goodsMapper.getall(id);
+    }
     public boolean insertGoods(Goods goods){
         if (goodsMapper.insert(goods)>0){
             return true;
@@ -25,7 +29,7 @@ public class GoodsService {
         return false;
     }
     public boolean update(Goods goods){
-        if (goodsMapper.update(goods,null)>0){
+        if (goodsMapper.update(goods,new UpdateWrapper<Goods>().eq("goodsid",goods.getGoodsid()))>0){
             return true;
         }
         return false;

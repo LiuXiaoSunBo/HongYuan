@@ -1,6 +1,7 @@
 package com.hongyuan.warehouse.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hongyuan.warehouse.mapper.WareHouseMapper;
 import com.hongyuan.warehouse.pojo.Warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class WarehouseService {
 
     public Boolean insertGoodsinWareHouse(Warehouse warehouse){
         if (wareHouseMapper.insert(warehouse)>0){
+
             return true;
         }
         return false;
@@ -30,7 +32,7 @@ public class WarehouseService {
         return wareHouseMapper.selectById(id);
     }
     public int upd(Warehouse warehouse){
-        return  wareHouseMapper.update(warehouse,null);
+        return  wareHouseMapper.update(warehouse,new UpdateWrapper<Warehouse>().eq("goodsid",warehouse.getGoodsid()));
     }
 
 

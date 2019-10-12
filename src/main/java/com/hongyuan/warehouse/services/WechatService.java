@@ -60,7 +60,7 @@ public class WechatService {
             System.out.println(wechatTalkMessage.getContent().contains("业务"));
             System.out.println(wechatTalkMessage.getContent().contains("仓库"));
             if (wechatTalkMessage.getContent().contains("业务")) {
-                return talk(wechatTalkMessage, "QQ:1152650793\n 微信:kai1152650793 \n 田生");
+                return talk(wechatTalkMessage, "手机号:13823234170\n 微信:13823234170 \n 田生");
             }else if (wechatTalkMessage.getContent().contains("仓库")){
                 return talk(wechatTalkMessage, "http://localhost/Goods.html?openid="+wcb.getFromUserName());
             }
@@ -86,33 +86,33 @@ public class WechatService {
 
     @Scheduled(fixedRate = 1000*60*60*2)
     public void getAccess_token() throws IOException {
-       System.out.println("来拿accesstoken啦");
-       String getaccesstoken = sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appsecret);
-       JSONObject jsonObject = JSONObject.parseObject(getaccesstoken);
-       this.acusstoken=jsonObject.getString("access_token");
+//       System.out.println("来拿accesstoken啦");
+//       String getaccesstoken = sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appsecret);
+//       JSONObject jsonObject = JSONObject.parseObject(getaccesstoken);
+//       this.acusstoken=jsonObject.getString("access_token");
     }
 
     public void setView() throws IOException {
-        String data= "{\n" +
-                "\t\"button\": [{\n" +
-                "\t\t\"type\": \"view\",\n" +
-                "\t\t\"name\": \"货物\",\n" +
-                "\t\t\"url\": \"http://122.51.16.101/hongyuan/Goods.html\"\n" +
-                "\t}]\n" +
-                "}";
-        System.out.println(new String(data.getBytes(),"UTF-8"));
-        System.out.println(data);
-        String sendpost = sendpost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+this.acusstoken,data);
-        System.out.println("accesstoken="+acusstoken);
-        System.out.println(sendpost);
-
-        System.out.println(JSONObject.parseObject(sendpost).getInteger("errcode"));
-        System.out.println(sendpost);
-        if (JSONObject.parseObject(sendpost).getInteger("errcode")==0){
-            System.out.println("设置成功!");
-        }else {
-            throw new Error("菜单出现错误!");
-        }
+//        String data= "{\n" +
+//                "\t\"button\": [{\n" +
+//                "\t\t\"type\": \"view\",\n" +
+//                "\t\t\"name\": \"货物\",\n" +
+//                "\t\t\"url\": \"http://122.51.16.101/hongyuan/Goods.html\"\n" +
+//                "\t}]\n" +
+//                "}";
+//        System.out.println(new String(data.getBytes(),"UTF-8"));
+//        System.out.println(data);
+//        String sendpost = sendpost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+this.acusstoken,data);
+//        System.out.println("accesstoken="+acusstoken);
+//        System.out.println(sendpost);
+//
+//        System.out.println(JSONObject.parseObject(sendpost).getInteger("errcode"));
+//        System.out.println(sendpost);
+//        if (JSONObject.parseObject(sendpost).getInteger("errcode")==0){
+//            System.out.println("设置成功!");
+//        }else {
+//            throw new Error("菜单出现错误!");
+//        }
     }
 
     private String sendpost(String url,String data) throws IOException {

@@ -3,6 +3,7 @@ package com.hongyuan.warehouse.controller;
 import com.hongyuan.warehouse.pojo.Warehouse;
 import com.hongyuan.warehouse.services.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ public class WareHouseController {
     }
     @RequestMapping("/insertwarehouse")
     public String warehouse(Warehouse warehouse){
+
        if (warehouseService.insertGoodsinWareHouse(warehouse)){
            return "1";
        }

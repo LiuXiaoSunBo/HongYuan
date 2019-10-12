@@ -47,7 +47,9 @@ public class WechatService {
         System.out.println(wcb.getMsgType());
         if (wcb.getMsgType().equals("event")) {
             WechatEvent wct = JAXB.unmarshal(inputStream, WechatEvent.class);
-            if (wct.equals(Event_subscribe)) {
+            System.out.println(wct.getMsgType());
+            System.out.println(wct.toString());
+            if (wct.getMsgType().equals(Event_subscribe)) {
                 WechatTalkMessage wechatTalkMessage = new WechatTalkMessage();
                 wechatTalkMessage.setFromUserName(wct.getToUserName());
                 wechatTalkMessage.setToUserName(wcb.getFromUserName());

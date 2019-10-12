@@ -200,7 +200,7 @@
                 time.replace('日','-')
                 let  url = "http://localhost/insertgoods";
                 if (document.getElementsByClassName("bs")[0].style.display=='inline-block'){
-                    url+="?warehome="+that.warehourse
+                    url+="?warehome="+parseInt(that.warehourse)
                 }
                 if (this.goodsname!=""&&this.goodsmaterial!=""&&this.companyname!=""&&this.stampingnumber!=""
                     &&this.goodsproductions!=""&&this.mould!=""&&this.gluingnumber!=""
@@ -253,7 +253,10 @@
                     that.truenumber= val.truenumber
                     that.checked= val.isover==1?true:false
                     that.mould= val.mould
-                    that.warehourse=val.warehouse.goodsnumber
+                    that.warehourse=0
+                    if (val.warehouse!=null){
+                        that.warehourse=val.warehouse.goodsnumber
+                    }
                     console.log(val.imgurl)
                     document.getElementById("tup").src=val.imgurl
                 })

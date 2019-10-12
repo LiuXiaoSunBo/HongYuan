@@ -5,10 +5,7 @@ import com.hongyuan.warehouse.pojo.Warehouse;
 import com.hongyuan.warehouse.services.GoodsService;
 import com.hongyuan.warehouse.services.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class GoodsController {
    @RequestMapping("/getbyid")
    public Goods t(Integer id){return  goodsService.getbyid(id);}
     @PostMapping("/insertgoods")
-    public String test(@RequestBody  Goods goods,Integer warehome){
+    public String test(@RequestBody  Goods goods,@RequestParam(required = false) Integer warehome){
         if (goodsService.getbyid(goods.getGoodsid())==null){
             System.out.println(goods.toString());
             if (goodsService.insertGoods(goods)==true){
@@ -41,7 +38,7 @@ public class GoodsController {
             }
         }else {
             if (goodsService.update(goods)==true){
-                if (!warehome.equals("")&&warehome!=0&&warehome!=null){
+                if (warehome!=0){
                     if (warehouseService.getw(goods.getGoodsid())==null){
                         Boolean aBoolean = warehouseService.insertGoodsinWareHouse(new Warehouse(goods.getGoodsid(), goods.getGoodsshipmentdata(),warehome));
                         if (aBoolean==true){

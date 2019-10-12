@@ -29,8 +29,8 @@ import java.nio.charset.Charset;
 public class WechatService {
     private String Event_subscribe = "subscribe";
     private String Event_unsubscribe = "unsubscribe";
-    private String appid="wx6787a9dcb670047b";
-    private String appsecret="030fb01ab88fe1c7404bbb8e2826ebca";
+    private String appid="wxf608d12013842cac";
+    private String appsecret="8a8f27807dcec1b62b29daa75cab83a6";
     private String acusstoken="";
     public String talk(WechatTalkMessage wct, String msg) throws IOException {
         change(wct, wct.getToUserName());

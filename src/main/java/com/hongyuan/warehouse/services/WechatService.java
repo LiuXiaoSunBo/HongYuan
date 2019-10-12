@@ -91,15 +91,17 @@ public class WechatService {
                 "\t\"button\": [{\n" +
                 "\t\t\"type\": \"view\",\n" +
                 "\t\t\"name\": \"货物\",\n" +
-                "\t\t\"url\": \"http://bsx6.cn/Goods.html/\"\n" +
+                "\t\t\"url\": \"http://122.51.16.101/hongyuan/Goods.html/\"\n" +
                 "\t}]\n" +
                 "}";
         System.out.println(new String(data.getBytes(),"UTF-8"));
-        String sendpost = sendpost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+this.acusstoken,new String(data.getBytes(),"UTF-8"));
+        System.out.println(data);
+        String sendpost = sendpost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+this.acusstoken,data);
         System.out.println("accesstoken="+acusstoken);
         System.out.println(sendpost);
 
         System.out.println(JSONObject.parseObject(sendpost).getInteger("errcode"));
+        System.out.println(sendpost);
         if (JSONObject.parseObject(sendpost).getInteger("errcode")==0){
             System.out.println("设置成功!");
         }else {

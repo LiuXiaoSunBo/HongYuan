@@ -182,7 +182,7 @@
                 time.replace('年','-')
                 time.replace('月','-')
                 time.replace('日','-')
-                let  url = "http://www.bsx6.cn:6324/insertgoods";
+                let  url = "http://122.51.16.101/hongyuan/insertgoods";
                 if (document.getElementsByClassName("bs")[0].style.display=='inline-block'){
                     url+="?warehome="+that.warehourse
                 }
@@ -206,7 +206,7 @@
                     }).then(function (res) {
                         if (res.data==1){
                             alert("操作成功!")
-                            window.location.href="http://www.bsx6.cn:6324/Goods.html"
+                            window.location.href="http://122.51.16.101/hongyuan/Goods.html"
                         }
                     })
                 }else {
@@ -220,7 +220,7 @@
             if (queryVariable!=""&&queryVariable!=null&&queryVariable instanceof Object ==false)
             {
                 document.getElementsByClassName("bs")[0].style.display="inline-block"
-                axios.get("http://www.bsx6.cn:6324/getbyid?id="+queryVariable).then(function (res) {
+                axios.get("http://122.51.16.101/hongyuan/getbyid?id="+queryVariable).then(function (res) {
                     let val = res.data
                     console.log(res.data)
                     that.goodsid=val.goodsid

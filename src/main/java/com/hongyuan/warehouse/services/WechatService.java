@@ -91,7 +91,7 @@ public class WechatService {
                 "\t\"button\": [{\n" +
                 "\t\t\"type\": \"view\",\n" +
                 "\t\t\"name\": \"货物\",\n" +
-                "\t\t\"url\": \"http://122.51.16.101/hongyuan/Goods.html/\"\n" +
+                "\t\t\"url\": \"http://122.51.16.101/hongyuan/Goods.html\"\n" +
                 "\t}]\n" +
                 "}";
         System.out.println(new String(data.getBytes(),"UTF-8"));

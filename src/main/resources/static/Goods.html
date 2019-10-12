@@ -43,18 +43,18 @@
 </div>
 <script>
     new Vue({
-        el:"#root",
-        data:{
+        el: "#root",
+        data: {
             active: 0,
-            value:"",
-            list:[] ,
+            value: "",
+            list: [],
             loading: false,
             finished: false,
-            name:"",
-            war:[],
-            warname:""
+            name: "",
+            war: [],
+            warname: ""
         },
-        methods:{
+        methods: {
             onLoad() {
                 setTimeout(() => {
                     console.log(this.list)
@@ -63,34 +63,36 @@
 
                     // 数据全部加载完成
 
-                        this.finished = true}, 500);
+                    this.finished = true
+                }, 500);
             }
             ,
-            chang2(){
-                window.location.href="http://122.51.16.101/hongyuan/Goodsinfo.html"
+            chang2() {
+                window.location.href = "http://122.51.16.101/hongyuan/Goodsinfo.html"
             },
             change(e) {
-               window.location.href="http://122.51.16.101/hongyuan/Goodsinfo.html?id="+e
+                window.location.href = "http://122.51.16.101/hongyuan/Goodsinfo.html?id=" + e
             },
-            test:function (e) {
+            test: function (e) {
                 this.name = e;
                 let that = this
-                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name="+this.name,{headers:{"content-Type":"application/json"}}).then(function (res) {
+                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
 
-                    if (res.data.size!=0){
-                        that.list=res.data
+                    if (res.data.size != 0) {
+                        that.list = res.data
                     }
                 })
             },
-          mounted() {
-            let that = this
-              axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(  function (res) {
-                 if (res.data.size != 0) {
-                     that.list = res.data
-                     console.log(that.list)
-                 }
-             })
-         }
+            mounted() {
+                let that = this
+                axios.get("http://122.51.16.101/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
+                    if (res.data.size != 0) {
+                        that.list = res.data
+                        console.log(that.list)
+                    }
+                })
+            }
+        }
     })
 </script>
 </body>

@@ -16,8 +16,6 @@ public class Goods {
     String goodsgel;
     String goodsproductions;
     String goodsshipment;
-    String gluingnumber;
-    String stampingnumber;
     String goodsshipmentdata;
     String mould;
     String imgurl;

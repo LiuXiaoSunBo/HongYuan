@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>深圳宏源电子铭板有限公司</title>
     <meta name="viewport" content="width=device-width">
     <script src="vue.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
@@ -88,7 +88,7 @@
             loading: false,
             finished: false,
             name: "",
-            war: [],
+            war: []
         },
         methods: {
             onLoad() {
@@ -104,15 +104,15 @@
             }
             ,
             chang2() {
-                window.location.href = "http://localhost/Goodsinfo.html"
+                window.location.href = "https://www.bsx6.cn/hongyuan/Goodsinfo.html"
             },
             change(e) {
-                window.location.href = "http://localhost/Goodsinfo.html?id=" + e
+                window.location.href = "https://www.bsx6.cn122.51.16.101/hongyuan/Goodsinfo.html?id=" + e
             },
             test: function (e) {
                 this.name = e;
                 let that = this
-                axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
+                axios.get("https://www.bsx6.cn/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
 
                     if (res.data.size != 0) {
                         that.list = res.data
@@ -124,10 +124,10 @@
             let that = this
             let queryVariable = getQueryVariable("openid");
             if (queryVariable!=null&&queryVariable!=""&&queryVariable!=undefined){
-                axios.post("http://localhost/login",{queryVariable}).then(function (res) {
+                axios.post("https://www.bsx6.cn/hongyuan/login",{queryVariable}).then(function (res) {
                    if (res.data==true){
                        sessionStorage.setItem("openid",queryVariable)
-                       axios.get("http://localhost/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
+                       axios.get("https://www.bsx6.cn/hongyuan/getGoodsbyname?name=" + this.name, {headers: {"content-Type": "application/json"}}).then(function (res) {
                            if (res.data.size != 0) {
                                console.log("页面加载中!~")
                                that.list = res.data

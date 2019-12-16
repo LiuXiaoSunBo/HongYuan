@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
-    <title>Title</title>
+    <title>深圳宏源电子铭板有限公司</title>
     <script src="vue.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -33,6 +33,7 @@
 
 <body>
 <div id="root">
+
     <van-cell-group class="s">
         <van-field
                 v-model="companyname"
@@ -169,7 +170,9 @@
     <van-button id="sub" @click="commit" type="primary" size="large" style="border: 1px solid blue">提交</van-button>
 </div>
 <script>
+
     var base64;
+    var imgurlses;
     new Vue({
         el:"#root",
         data:{
@@ -192,16 +195,25 @@
                 document.getElementById("files").click()
             }
             ,
-            commit:function (){
+            commit:async function (){
                 let that =this;
                 let time =(new Date()).toLocaleDateString()
                 time.replace('年','-')
                 time.replace('月','-')
                 time.replace('日','-')
-                let  url = "http://localhost/insertgoods";
+                let  url = "https://www.bsx6.cn/hongyuan/insertgoods";
                 if (document.getElementsByClassName("bs")[0].style.display=='inline-block'){
+                    if(that.warehourse==0){
+                        alert("请输入入库个数!")
+                        return
+                    }
                     url+="?warehome="+parseInt(that.warehourse)
                 }
+                if (imgurlses==""||imgurlses==null){
+                    alert("请重新选择图片!");
+                    return
+                }
+
                 if (this.goodsname!=""&&this.goodsmaterial!=""&&this.companyname!=""&&this.stampingnumber!=""
                     &&this.goodsproductions!=""&&this.mould!=""&&this.gluingnumber!=""
                     &&this.goodsshipment!=""&&this.truenumber!=""&&base64!=""){
@@ -219,11 +231,11 @@
                         truenumber:that.truenumber,
                         isover:that.checked==true?1:0,
                         goodsshipmentdata:time,
-                        imgurl:base64
+                        imgurl:imgurlses
                     }).then(function (res) {
                         if (res.data==1){
                             alert("操作成功!")
-                            window.location.href="http://localhost/Goods.html?openid="+sessionStorage.getItem("openid")
+                            window.location.href="https://www.bsx6.cn/hongyuan/Goods.html?openid="+sessionStorage.getItem("openid")
                         }
                     })
                 }else {
@@ -232,12 +244,13 @@
             }
         },
         created(){
+
             let that = this
             let queryVariable = getQueryVariable("id");
             if (queryVariable!=""&&queryVariable!=null&&queryVariable instanceof Object ==false)
             {
                 document.getElementsByClassName("bs")[0].style.display="inline-block"
-                axios.get("http://localhost/getgoodsall?id="+queryVariable).then(function (res) {
+                axios.get("https://www.bsx6.cn/hongyuan/getgoodsall?id="+queryVariable).then(function (res) {
                     let val = res.data
                     console.log(res.data)
                     that.goodsid=val.goodsid
@@ -273,9 +286,23 @@
         }
         return(false);
     }
-    function get(t) {
+    async  function get(t) {
         console.log(t.files)
         let reader = new FileReader();
+        let formdata = new FormData();
+        let name = t.files[0].name;
+        let lastname=name.substring(name.indexOf(".")+1,name.length)
+        let filename = name.substring(0,name.indexOf("."))
+        formdata.append("file",t.files[0])
+        formdata.append("name",  t.files[0].lastModified+filename)
+        formdata.append("tap",lastname)
+        axios({
+            url:"https://www.bsx6.cn/hongyuan/getpic",
+            method:"post",
+            data:formdata
+        }).then(response=>{
+            imgurlses=response.data
+        })
         reader.readAsDataURL(t.files[0])
         reader.onload=function (e) {
             base64=e.currentTarget.result

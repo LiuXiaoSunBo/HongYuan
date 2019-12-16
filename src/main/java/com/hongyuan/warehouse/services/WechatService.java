@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Date;
 
 @Service
 public class WechatService {
@@ -44,25 +45,24 @@ public class WechatService {
         InputStream inputStream = inpustStreamtoStringtoinputstream(request.getInputStream());
         WechatBase wcb = JAXB.unmarshal(inputStream, WechatBase.class);
         inputStream.reset();
-        System.out.println(wcb.getMsgType());
+
         if (wcb.getMsgType().equals("event")) {
             WechatEvent wct = JAXB.unmarshal(inputStream, WechatEvent.class);
-            System.out.println(wct.getMsgType());
-            System.out.println(wct.toString());
-            if (wct.getMsgType().equals(Event_subscribe)) {
+
+            if (wct.getEvent().equals(Event_subscribe)) {
                 WechatTalkMessage wechatTalkMessage = new WechatTalkMessage();
-                wechatTalkMessage.setFromUserName(wct.getToUserName());
-                wechatTalkMessage.setToUserName(wcb.getFromUserName());
+                wechatTalkMessage.setToUserName(wct.getToUserName());
+                wechatTalkMessage.setFromUserName(wct.getFromUserName());
+                wechatTalkMessage.setCreateTime(String.valueOf(new Date().getTime()));
+                wechatTalkMessage.setMsgType("text");
                 return talk(wechatTalkMessage, "感谢您关注宏源电子铭板公众号！\n 如有业务需求请回复" + '"' + "业务" + '"');
             }
         } else if (wcb.getMsgType().equals("text")) {
             WechatTalkMessage wechatTalkMessage = JAXB.unmarshal(inputStream, WechatTalkMessage.class);
-            System.out.println(wechatTalkMessage.getContent().contains("业务"));
-            System.out.println(wechatTalkMessage.getContent().contains("仓库"));
             if (wechatTalkMessage.getContent().contains("业务")) {
                 return talk(wechatTalkMessage, "手机号:13823234170\n 微信:13823234170 \n 田生");
             }else if (wechatTalkMessage.getContent().contains("仓库")){
-                return talk(wechatTalkMessage, "http://localhost/Goods.html?openid="+wcb.getFromUserName());
+                return talk(wechatTalkMessage, "http://122.51.16.101/hongyuan/Goods.html?openid="+wcb.getFromUserName());
             }
         }
         return "";

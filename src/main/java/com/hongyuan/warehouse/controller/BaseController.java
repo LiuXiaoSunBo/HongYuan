@@ -2,6 +2,7 @@ package com.hongyuan.warehouse.controller;
 
 import com.hongyuan.warehouse.pojo.wechat.WechatTalkMessage;
 import com.hongyuan.warehouse.services.WechatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,19 +15,20 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
-
+@Slf4j
 @RestController
 public class BaseController {
     @Autowired
     WechatService wechatService;
     @RequestMapping("/")
     public String test(HttpServletRequest request, @RequestParam(name="echostr",required = false,defaultValue = "") String echostr) throws IOException, URISyntaxException {
-        System.out.println("echostr```````````````"+echostr);
-        System.out.println(echostr!="");
-        if (echostr!=""&&echostr!=null&&!echostr.equals("")){
+        if (echostr != "" && echostr != null && !echostr.equals("")) {
             return echostr;
+        }else {
+            String event = wechatService.event(request);
+            log.info(event);
+            return event;
         }
-        System.out.println("是文字啊");
-        return wechatService.event(request);
+
     }
 }
